@@ -1,1 +1,20 @@
-<p>layout-admin works!</p>
+<div class="d-flex flex-column vh-100">
+  <header class="bg-dark text-white sticky-top">
+    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+  </header>
+
+  <div class="layout-container d-flex flex-grow-1">
+    <nav *ngIf="!isMobile || isSidebarVisible" class="sidebar"
+      [ngClass]="{ 'sidebar-overlay': isMobile, 'sidebar-md': !isMobile, 'show': isSidebarVisible }">
+      <app-navbar></app-navbar>
+    </nav>
+
+    <main class="main-content flex-grow-1 p-3">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <footer class="bg-light text-center py-2 border-top">
+    <app-footer></app-footer>
+  </footer>
+</div>

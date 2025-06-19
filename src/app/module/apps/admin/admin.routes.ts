@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LayoutAdminComponent } from '../../../shared/layouts/admin/layout-admin/layout-admin.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -8,8 +9,17 @@ export const AdminRoutes: Routes = [
       import('../../../core/auth/admin/auth-admin.routes').then((m) => m.AuthAdminRoutes),
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: '',
+    component: LayoutAdminComponent,
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+
+
+
+
+
+      
+    ],
   },
   {
     path: '',

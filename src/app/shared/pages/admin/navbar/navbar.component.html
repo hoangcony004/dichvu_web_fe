@@ -1,1 +1,17 @@
-<p>navbar works!</p>
+<nav
+  class="bg-light vh-100 p-3 border-end"
+  [class.d-none]="isMobile && isCollapsed"
+  style="width: 250px; min-width: 250px"
+>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/"><i class="fas fa-home me-2"></i>Trang chủ</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/users"><i class="fas fa-users me-2"></i>Người dùng</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/settings"><i class="fas fa-cog me-2"></i>Cài đặt</a>
+    </li>
+  </ul>
+</nav>
