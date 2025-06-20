@@ -69,10 +69,14 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "dichvu_web_fe:build:production"
+              "buildTarget": "dichvu_web_fe:build:production",
+              "host": "0.0.0.0",
+              "port": 2004  
             },
             "development": {
-              "buildTarget": "dichvu_web_fe:build:development"
+              "buildTarget": "dichvu_web_fe:build:development",
+              "host": "0.0.0.0",
+              "port": 2004  
             }
           },
           "defaultConfiguration": "development"

@@ -1,10 +1,118 @@
-<p>dashboard works!</p>
+<div class="container">
+    <div class="col">
+        <div class="p-3 mb-4" style="background-color: #ededed;">
+            <h4>Dashboard</h4>
+            <hr>
 
+            <!-- Khối thống kê trên cùng -->
+            <div class="row mb-4">
+              <div class="col-md-3" *ngFor="let stat of stats">
+                <div class="card text-center mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="fw-bold">{{ stat.label }}</span>
+                      <span class="badge bg-{{stat.color}}">{{ stat.type }}</span>
+                    </div>
+                    <h3 class="mb-0">{{ stat.value | number }}</h3>
+                    <div class="text-muted small">{{ stat.sub }}</div>
+                    <div class="mt-2">
+                      <span *ngIf="stat.percent >= 0" class="text-success">{{ stat.percent }}% <i class="bi bi-arrow-up"></i></span>
+                      <span *ngIf="stat.percent < 0" class="text-danger">{{ stat.percent * -1 }}% <i class="bi bi-arrow-down"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<app-btn-add></app-btn-add>
+            <!-- Chart Orders và các chỉ số -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h5>Orders</h5>
+                    <!-- Chart placeholder, có thể thay bằng thư viện chart sau -->
+                    <div style="height:220px; background:#f8f9fa; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#aaa;">
+                      <span>Chart Orders (demo)</span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div *ngFor="let o of ordersStats" class="mb-3">
+                      <div class="fw-bold">{{ o.value | number }}</div>
+                      <div class="text-muted small">{{ o.label }}</div>
+                      <div class="progress" style="height:6px;">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width.%]="o.percent"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-test bootstrap
-
-<button class="btn btn-primary">test bootstrap</button><br><hr>
-
-<a class="side-nav-link text-black text-decoration-none" [routerLink]="['/admin/login']">Login</a>
+            <div class="row">
+              <!-- Messages -->
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <div class="card-header fw-bold">Messages</div>
+                  <div class="card-body">
+                    <div class="mb-2">
+                      <span class="fw-bold">New messages</span>
+                      <div class="text-muted small">You have {{messages.new}} new messages and {{messages.draft}} waiting in draft folder.</div>
+                    </div>
+                    <div *ngFor="let m of messages.list" class="border-top pt-2 mt-2">
+                      <div class="fw-bold">{{m.name}} <span class="text-success small">{{m.time}}</span></div>
+                      <div class="text-muted small">{{m.content}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- User project list -->
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <div class="card-header fw-bold">User project list</div>
+                  <div class="card-body">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Status</th>
+                          <th>Date</th>
+                          <th>User</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let p of userProjects">
+                          <td>
+                            <span class="badge" [ngClass]="{'bg-warning': p.status==='Pending', 'bg-danger': p.status==='Canceled'}">{{p.status}}</span>
+                          </td>
+                          <td><i class="bi bi-clock"></i> {{p.time}}</td>
+                          <td>{{p.user}}</td>
+                          <td>
+                            <span [ngClass]="{'text-success': p.isUp}">
+                              ↑ {{p.value}}%
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- Small todo list -->
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <div class="card-header fw-bold">Small todo list</div>
+                  <div class="card-body">
+                    <ul class="list-group">
+                      <li *ngFor="let t of todos" class="list-group-item d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input me-2" [checked]="t.done" disabled>
+                        <span [ngClass]="{'text-decoration-line-through': t.done}">{{t.text}}</span>
+                        <span *ngIf="t.time" class="badge bg-info ms-auto">{{t.time}}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

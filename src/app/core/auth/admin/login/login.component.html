@@ -1,8 +1,30 @@
-<p>login works!</p>
+<div class="layout-login">
+  <div class="wrapper">
+    <div class="title">
+      Login Admin
+    </div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <input type="text" [(ngModel)]="username" name="username" autofocus>
+        <label>Tên đăng nhập</label>
+      </div>
+      <div class="field">
+        <input type="password" [(ngModel)]="password" name="password">
+        <label>Mật khẩu</label>
+      </div>
+      <div class="content">
+        <div class="checkbox">
+          <input type="checkbox" id="remember-me" name="remember">
+          <label for="remember-me">Ghi nhớ tôi.</label>
+        </div>
+        <div class="pass-link">
+          <a href="#">Quên mật khẩu?</a>
+        </div>
+      </div>
+      <div class="field">
+        <input type="submit" value="Đăng nhập">
+      </div>
+    </form>
+  </div>
 
-
-<app-btn-add></app-btn-add>
-
-test bootstrap
-
-<button class="btn btn-primary">test bootstrap</button>
+</div>
