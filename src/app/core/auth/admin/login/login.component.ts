@@ -22,16 +22,19 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private titleService: Title,
     private toastr: ToastrService,
     private service: DichVuWeb_Service
   ) {}
 
-  private route = inject(ActivatedRoute);
-  private returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  returnUrl: string = '/';
 
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
+    this.route.queryParams.subscribe(params => {
+      this.returnUrl = params['returnUrl'] || '/admin/dashboard';
+    });
   }
 
   onSubmit() {
@@ -46,16 +49,15 @@ export class LoginComponent implements OnInit {
 
     this.service.apiLogin(loginRequestDTO).subscribe({
       next: (response) => {
-        if (response.status === 'SUCCESS' && response.data?.token) {
+        if (response.status === 'SUCCESS' && response.data?.accessToken) {
           // Lưu token và menu vào localStorage
-          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('access_token', response.data.accessToken);
           if (response.data.user) {
             localStorage.setItem('user', JSON.stringify(response.data.user));
-          } else {
-            console.error("User is undefined, cannot save to localStorage.");
           }
           
           this.toastr.success('Đăng nhập thành công', 'Thông báo');
+          console.log(this.returnUrl)
           // Điều hướng tới returnUrl nếu có, mặc định về dashboard
           const targetUrl = this.returnUrl && this.returnUrl !== '/' ? this.returnUrl : '/admin/dashboard';
           this.router.navigateByUrl(targetUrl);
@@ -82,8 +84,7 @@ export class LoginComponent implements OnInit {
         }
       },
       complete: () => {
-        // Chỉ reset loading khi đăng nhập thành công
-        if (!localStorage.getItem('token')) {
+        if (!localStorage.getItem('access_token')) {
           this.isLoading = false;
         }
       },

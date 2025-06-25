@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from './shared/errors/not-found/not-found.component';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,6 @@ export const routes: Routes = [
       loadChildren: () =>
         import('./module/apps/client/client.routes').then((m) => m.ClientRoutes),
     },
+    { path: '**', component: NotFoundComponent },
   ];
   

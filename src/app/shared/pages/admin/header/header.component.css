@@ -2,3 +2,8 @@
     display: none !important;
   }
   
+  ul li a:active {
+    background-color: white;
+    color: black;
+  }
+  

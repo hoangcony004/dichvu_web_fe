@@ -4,6 +4,10 @@ import { DichVuWeb_Service } from '../../../../core/service/dichvuweb.service';
 import { ToastrService } from 'ngx-toastr';
 import { timer } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ProfileUserComponent } from '../../../components/profile-user/profile-user.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from '../../../../core/custom/common.service';
+import { STATUS_ACTION } from '../../../../core/custom/constants';
 
 @Component({
   selector: 'app-header',
@@ -18,10 +22,11 @@ export class HeaderComponent implements OnInit{
   @Output() toggleSidebar = new EventEmitter<void>();
   
   constructor(
-    
     private router: Router,
     private toastr: ToastrService,
-    private service: DichVuWeb_Service
+    private service: DichVuWeb_Service,
+    private dialog: MatDialog,
+    private commonService: CommonService,
   ) {}
   ngOnInit(): void {
     const user = localStorage.getItem('user');
@@ -36,15 +41,28 @@ export class HeaderComponent implements OnInit{
     }
   }
 
+  openProfileDialog(key: number) {
+    this.dialog
+      .open(
+        ProfileUserComponent,
+        this.commonService.configDialog('60%', {
+          key: key,
+          actionType: STATUS_ACTION.detail,
+        })
+      )
+      .afterClosed()
+      .subscribe(() => {});
+  }
+
   logout() {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
       // Gọi API để thêm token vào blacklist
-      this.service.apiLogout(token).subscribe({
+      this.service.apiLogout(access_token).subscribe({
         next: (response) => {
           console.log('Logout response:', response);
           // Xóa token và menu từ localStorage
-          localStorage.removeItem('token');
+          localStorage.removeItem('access_token');
           localStorage.removeItem('user');
 
           this.toastr.success('Đăng xuất thành công', 'Thông báo');
@@ -57,7 +75,7 @@ export class HeaderComponent implements OnInit{
         },
         error: (error: HttpErrorResponse) => {
           // Ngay cả khi có lỗi, vẫn xóa token và chuyển hướng
-          localStorage.removeItem('token');
+          localStorage.removeItem('access_token');
           localStorage.removeItem('user');
           this.toastr.error('Đăng xuất thất bại', 'Lỗi');
           // Đợi 1 giây trước khi chuyển hướng

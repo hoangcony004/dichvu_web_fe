@@ -3,6 +3,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { DichVuWeb_Service } from '../../../../core/service/dichvuweb.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -63,10 +64,20 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private titleService: Title,
+    private service: DichVuWeb_Service
   ) {}
 
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
+    // console.log('⏱️ Chuẩn bị gọi API sau 15 giây...');
+    // setTimeout(() => {
+    //   console.log('🚀 Gọi API getUser sau khi token hết hạn...');
+    //   this.service.publicApiHello().subscribe({
+    //     next: (res) => console.log('✅ OK:', res),
+    //     error: (err) => console.error('❌ ERROR:', err)
+    //   });
+    // }, 15000); // sau 15 giây
+    
   }
 
 }

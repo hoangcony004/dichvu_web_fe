@@ -14,6 +14,7 @@ import { BtnSearchComponent } from './components/templates/buttons/search/btn-se
 import { CommonModule } from '@angular/common';
 import { IconLockOpenComponent } from './components/templates/icons/lock-open/icon-lock-open.component';
 import { IconLockComponent } from './components/templates/icons/lock/icon-lock.component';
+import { IconChevronDownComponent } from './components/templates/icons/chevron-down/icon-chevron-down.component';
 
 const sharedComponents = [
     // icons
@@ -24,6 +25,7 @@ const sharedComponents = [
   IconTreeComponent,
   IconLockOpenComponent,
   IconLockComponent,
+  IconChevronDownComponent,
 
 
 

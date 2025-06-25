@@ -8,13 +8,17 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { authInterceptor } from './core/auth/admin/auth.interceptor';
 import { SpinnerInterceptor } from './core/interceptor/spinner.interceptor';
-
+import { httpErrorInterceptor } from './shared/errors/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([SpinnerInterceptor]),
+      withInterceptors([
+        SpinnerInterceptor,
+        authInterceptor,
+        httpErrorInterceptor
+      ])
     ),
     provideAnimations(),
     importProvidersFrom(
@@ -23,9 +27,9 @@ export const appConfig: ApplicationConfig = {
         positionClass: 'toast-top-right',
         preventDuplicates: true,
         closeButton: true,
-        progressBar: true
+        progressBar: true,
       }),
       NgxSpinnerModule
-    )
-  ]
+    ),
+  ],
 };
