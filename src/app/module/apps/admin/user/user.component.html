@@ -1,19 +1,41 @@
 <div class="container">
   <div class="col">
     <div class="p-3 mb-4" style="background-color: #ededed;">
-      <h4>{{ title }}</h4>
+      <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+        <h4>{{ title }}</h4>
+      </div>
+
       <hr>
 
-      <div class="d-flex justify-content-between mb-3">
-        <app-btn-add [text]="'Thêm mới'" [color]="'primary'" (click)="openCreateDialog()"></app-btn-add>
-      </div>
-
-      <div class="col">
-        <div class="d-flex justify-content-end">
-          <input type="search" class="form-control w-auto" name="search" placeholder="Tìm kiếm..." />&nbsp;
-          <!-- <app-btn-search class=" w-auto" [text]="''" [color]="'success'" (click)="onSearch()"></app-btn-search> -->
+      <!-- <div class="row">
+        <div class="d-flex justify-content-between mb-3 col">
+          <app-btn-add [text]="'Thêm mới'" [color]="'primary'" (click)="openCreateDialog()"></app-btn-add>
+        </div>
+  
+        <div class="col"> 
+          <div class="d-flex justify-content-end">
+            <input type="search" class="form-control w-auto" name="search" placeholder="Tìm kiếm..." />&nbsp;
+            <app-btn-search class=" w-auto" [text]="''" [color]="'success'" (click)="onSearch()"></app-btn-search>
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 text-right">
+          <div class="input-group">
+            <app-btn-add [text]="'Thêm mới'" [color]="'primary'" (click)="openCreateDialog()"></app-btn-add>&nbsp;&nbsp;
+            <input name="pageSearch" type="search" class="form-control" placeholder="Tìm kiếm"
+              aria-label="Nhập nội dung tìm kiếm" aria-describedby="basic-addon2">&nbsp;&nbsp;
+            <div class="input-group-append">
+              <app-btn-search class="btn-sm flex-fill" [text]="'Tìm kiếm'" [color]="'success'"
+                (click)="onSearch()"></app-btn-search>
+                <!-- &nbsp;&nbsp; -->
+              <!-- <app-btn-export class="btn-sm flex-fill" [text]="'Export'" [color]="'success'"></app-btn-export> -->
+            </div>
+          </div>
         </div>
       </div>
+
+
 
       <!-- Bảng dữ liệu -->
       <div class="table-responsive p-3">

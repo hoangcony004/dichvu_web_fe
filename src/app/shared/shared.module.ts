@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { IconLockOpenComponent } from './components/templates/icons/lock-open/icon-lock-open.component';
 import { IconLockComponent } from './components/templates/icons/lock/icon-lock.component';
 import { IconChevronDownComponent } from './components/templates/icons/chevron-down/icon-chevron-down.component';
+import { BtnExportComponent } from './components/templates/buttons/export/btn-export.component';
 
 const sharedComponents = [
     // icons
@@ -36,6 +37,7 @@ const sharedComponents = [
   BtnSaveComponent,
   BtnCloseComponent,
   BtnSearchComponent,
+  BtnExportComponent,
 ];
 
 @NgModule({

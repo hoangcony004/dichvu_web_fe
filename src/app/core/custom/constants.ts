@@ -52,6 +52,7 @@ export const LBL_DISPLAY = {
   sync: 'Đồng bộ',
   download: 'Tải xuống',
   chooseImportFile: 'Chọn File Import',
+  export: 'Xuất file'
 };
 
 export const TRANGTHAI_SUDUNG = {
