@@ -7,35 +7,22 @@
 
       <hr>
 
-      <!-- <div class="row">
-        <div class="d-flex justify-content-between mb-3 col">
-          <app-btn-add [text]="'Thêm mới'" [color]="'primary'" (click)="openCreateDialog()"></app-btn-add>
-        </div>
-  
-        <div class="col"> 
-          <div class="d-flex justify-content-end">
-            <input type="search" class="form-control w-auto" name="search" placeholder="Tìm kiếm..." />&nbsp;
-            <app-btn-search class=" w-auto" [text]="''" [color]="'success'" (click)="onSearch()"></app-btn-search>
-          </div>
-        </div>
-      </div> -->
       <div class="row">
         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 text-right">
           <div class="input-group">
             <app-btn-add [text]="'Thêm mới'" [color]="'primary'" (click)="openCreateDialog()"></app-btn-add>&nbsp;&nbsp;
             <input name="pageSearch" type="search" class="form-control" placeholder="Tìm kiếm"
-              aria-label="Nhập nội dung tìm kiếm" aria-describedby="basic-addon2">&nbsp;&nbsp;
+              aria-label="Nhập nội dung tìm kiếm" aria-describedby="basic-addon2"
+              [(ngModel)]="pageModel.strKey">&nbsp;&nbsp;
             <div class="input-group-append">
               <app-btn-search class="btn-sm flex-fill" [text]="'Tìm kiếm'" [color]="'success'"
                 (click)="onSearch()"></app-btn-search>
-                <!-- &nbsp;&nbsp; -->
+              <!-- &nbsp;&nbsp; -->
               <!-- <app-btn-export class="btn-sm flex-fill" [text]="'Export'" [color]="'success'"></app-btn-export> -->
             </div>
           </div>
         </div>
       </div>
-
-
 
       <!-- Bảng dữ liệu -->
       <div class="table-responsive p-3">
@@ -52,60 +39,39 @@
             </tr>
           </thead>
           <tbody>
-            <!-- <tr *ngFor="let item of data; let i = index">
-                      <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                      <td>{{ item.fullname }}</td>
-                      <td>{{ item.username }}</td>
-                      <td>{{ item.email }}</td>
-                      <td>{{ item.phone }}</td>
-                      <td>
-                        <span [ngClass]="getStatusClass(item.status)" class="text-white px-2 py-1 rounded">
-                          {{ getStatusText(item.status) }}
-                        </span>
-                      </td>
-      
-                      <td>
-                        <ng-icon-tree matTooltip="Phân quyền" (click)="openRoleDialog(item.id ?? 0)"></ng-icon-tree>&nbsp;&nbsp;
-      
-                        <ng-icon-info matTooltip="Xem chi tiết" style="color: blue"
-                          (click)="openDetailDialog(item.id ?? 0)"></ng-icon-info>&nbsp;&nbsp;
-      
-                        <ng-icon-edit matTooltip="Chỉnh sửa"
-                          (click)="openEditDialog(item.id ?? 0)"></ng-icon-edit>&nbsp;&nbsp;
-      
-                        <ng-icon-delete matTooltip="Xoá" style="color: red" (click)="openDeleteDialog(item.id ?? 0, item.username)"></ng-icon-delete>&nbsp;&nbsp;
-                        <ng-icon-lock *ngIf="item.status == 1" matTooltip="Khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock>
-                        <ng-icon-lock-open *ngIf="item.status == 2" matTooltip="Mở khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock-open>                  
-                      </td>
-      
-                    </tr> -->
-            <tr>
-              <td>1</td>
-              <td>hfghfg</td>
-              <td>fghfghfghfgh</td>
-              <td>y4r5y4r5</td>
-              <td>rthrthrthrth</td>
+            <tr *ngFor="let item of data; let i = index">
+              <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+              <td>{{ item.fullname }}</td>
+              <td>{{ item.username }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.phone }}</td>
               <td>
-                admin
+                <span [ngClass]="getStatusClass(item.status)" class="text-white px-2 py-1 rounded">
+                  {{ getStatusText(item.status) }}
+                </span>
               </td>
 
               <td>
 
-                <ng-icon-info matTooltip="Xem chi tiết" style="color: blue"
-                  (click)="openDetailDialog()"></ng-icon-info>&nbsp;&nbsp;
+                <app-icon-info matTooltip="Xem chi tiết" style="color: blue"
+                  (click)="openDetailDialog(item.id ?? 0)"></app-icon-info>&nbsp;&nbsp;
 
-                <ng-icon-edit matTooltip="Chỉnh sửa" (click)="openEditDialog()"></ng-icon-edit>&nbsp;&nbsp;
+                <app-icon-edit matTooltip="Chỉnh sửa"
+                  (click)="openEditDialog(item.id ?? 0)"></app-icon-edit>&nbsp;&nbsp;
 
-                <ng-icon-delete matTooltip="Xoá" style="color: red"
-                  (click)="openDeleteDialog()"></ng-icon-delete>&nbsp;&nbsp;
+                <app-icon-delete matTooltip="Xoá" style="color: red"
+                  (click)="openDeleteDialog(item.id ?? 0, item.username)"></app-icon-delete>
+                  <!-- &nbsp;&nbsp; -->
                 <!-- <ng-icon-lock *ngIf="item.status == 1" matTooltip="Khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock>
-                          <ng-icon-lock-open *ngIf="item.status == 2" matTooltip="Mở khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock-open>                   -->
+                        <ng-icon-lock-open *ngIf="item.status == 2" matTooltip="Mở khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock-open>                   -->
               </td>
-
             </tr>
+            <div class="mt-1">Tổng bản ghi: {{ totalItems || 0 }}</div>
           </tbody>
         </table>
-
+        <app-pagination [currentPage]="pageModel.currentPage!" [totalPages]="totalPages!" [totalItems]="totalItems!"
+          (pageChanged)="changePage($event)">
+        </app-pagination>
       </div>
     </div>
   </div>

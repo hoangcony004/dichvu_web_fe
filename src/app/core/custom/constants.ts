@@ -66,14 +66,16 @@ export const TRANGTHAI_SUDUNG = {
     },
   };
 
+
+  export const ADMIN_ROLE = 'ADMIN';
+  export const USER_ROLE = 'USER';
+
   export const Roles = [
     {
       name: 'Quản trị hệ thống',
-      value: '1',
     },
     {
       name: 'Quản trị vận hành',
-      value: '2',
     },
     {
       name: 'Quản trị liên thông văn bản',

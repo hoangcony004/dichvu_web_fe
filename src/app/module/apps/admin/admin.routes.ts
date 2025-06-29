@@ -22,7 +22,7 @@ export const AdminRoutes: Routes = [
         component: DashboardComponent,
       },
       {
-        path: 'user',
+        path: 'user-account',
         component: UserComponent,
       }
       

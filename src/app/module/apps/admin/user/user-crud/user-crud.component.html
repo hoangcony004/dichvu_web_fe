@@ -1,69 +1,66 @@
 <div class="d-flex flex-column h-100 p-4">
-    <form #frm="ngForm" (ngSubmit)="onSave()">
-      <!-- Header -->
-      <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-        <h3 class="m-0" *ngIf="dataRef.actionType === statusAction.create">Thêm người dùng</h3>
-        <h3 class="m-0" *ngIf="dataRef.actionType === statusAction.edit">Chỉnh sửa người dùng</h3>
-        <h3 class="m-0" *ngIf="dataRef.actionType === statusAction.detail">Xem chi tiết người dùng</h3>
-        <h3 class="m-0" *ngIf="dataRef.actionType === statusAction.role">Phân quyền người dùng</h3>
-        <app-icon-cancel (click)="onClose()" style="font-size: 18px"></app-icon-cancel>
-      </div>
-      <br />
-      <!-- Body -->
-      <div class="flex-grow-1 overflow-auto p-1">
-  
-        <div class="row">
-          <!-- Cột bên trái -->
-          <div class="col-md-6" *ngIf="dataRef.actionType !== statusAction.role">
-            <div class="mb-3">
-              <label for="fullname" class="form-label">Họ và tên</label>
-              <input type="text" class="form-control" id="fullname" placeholder="Nhập họ tên" name="fullname" required
-                 [disabled]="dataRef.actionType === statusAction.detail">
-            </div>
-  
-            <div class="mb-3">
-              <label for="username" class="form-label">Tên đăng nhập</label>
-              <input type="text" class="form-control" id="username" placeholder="Nhập tên đăng nhập" name="username"
-                required [disabled]="dataRef.actionType === statusAction.detail">
-            </div>
-  
-            <div class="mb-3" *ngIf="dataRef.actionType !== statusAction.detail">
-              <label for="password" class="form-label">Mật khẩu</label>
-              <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password"
-                required>
-            </div>
+  <form #frm="ngForm" (ngSubmit)="onSave(frm)">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+      <h3 class="m-0" *ngIf="currentActionType === statusAction.create">Thêm người dùng</h3>
+      <h3 class="m-0" *ngIf="currentActionType === statusAction.edit">Chỉnh sửa người dùng</h3>
+      <h3 class="m-0" *ngIf="currentActionType === statusAction.detail">Xem chi tiết người dùng</h3>
+      <app-icon-cancel (click)="onClose()" style="font-size: 18px"></app-icon-cancel>
+    </div>
+    <br />
+    <!-- Body -->
+    <div class="flex-grow-1 overflow-auto p-1">
+
+      <div class="row">
+        <!-- Cột bên trái -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="fullname" class="form-label">Họ và tên</label>
+            <input type="text" class="form-control" id="fullname" placeholder="Nhập họ tên" name="fullname" required
+              [(ngModel)]="target.fullname" [disabled]="currentActionType === statusAction.detail"
+              [ngModelOptions]="{ updateOn: 'change' }">
           </div>
-  
-          <!-- Cột bên phải -->
-          <div class="col-md-6" *ngIf="dataRef.actionType !== statusAction.role">
-            <div class="mb-3">
-              <label for="phone" class="form-label">Số điện thoại</label>
-              <input type="number" class="form-control" id="phone" placeholder="Nhập số điện thoại" name="phone" required
-                [disabled]="dataRef.actionType === statusAction.detail">
-            </div>
-  
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Nhập email" name="email" required
-                 [disabled]="dataRef.actionType === statusAction.detail">
-            </div>
-  
-            <div class="mb-3">
-              <label for="code" class="form-label">Code</label>
-              <input type="text" class="form-control" id="code" placeholder="Nhập code" name="unitcode"
-                 readonly [disabled]="dataRef.actionType === statusAction.detail">
-            </div>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Tên đăng nhập</label>
+            <input type="text" class="form-control" id="username" placeholder="Nhập tên đăng nhập" name="username"
+              required [(ngModel)]="target.username" [disabled]="currentActionType === statusAction.detail"
+              [ngModelOptions]="{ updateOn: 'change' }">
           </div>
-  
+
+          <div class="mb-3" *ngIf="currentActionType !== statusAction.detail">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password"
+              required [(ngModel)]="target.password" [ngModelOptions]="{ updateOn: 'change' }">
+          </div>
         </div>
+
+        <!-- Cột bên phải -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="phone" class="form-label">Số điện thoại</label>
+            <input type="number" class="form-control" id="phone" placeholder="Nhập số điện thoại" name="phone" required
+              [(ngModel)]="target.phone" [disabled]="currentActionType === statusAction.detail"
+              [ngModelOptions]="{ updateOn: 'change' }">
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Nhập email" name="email" required
+              [(ngModel)]="target.email" [disabled]="currentActionType === statusAction.detail"
+              [ngModelOptions]="{ updateOn: 'change' }">
+          </div>
+        </div>
+
       </div>
-  
-      <!-- Footer -->
-      <div class="border-top pt-3 mt-3 text-end">
-        <app-btn-close (click)="onClose()" [color]="'secondary'"></app-btn-close>&nbsp;&nbsp;
-        <app-btn-save [color]="'success'" [disabled]="(frm?.invalid ?? false)" (click)="onSave()"
-          *ngIf="dataRef.actionType !== statusAction.detail"></app-btn-save>
-  
-      </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-top pt-3 mt-3 text-end">
+      <app-btn-close (click)="onClose()" [color]="'secondary'"></app-btn-close>&nbsp;&nbsp;
+      <app-btn-save [color]="'success'" [disabled]="(frm?.invalid ?? false)"
+        *ngIf="currentActionType !== statusAction.detail"></app-btn-save>
+
+    </div>
+  </form>
+</div>

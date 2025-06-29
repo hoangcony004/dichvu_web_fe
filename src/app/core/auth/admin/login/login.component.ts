@@ -16,8 +16,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
   title = 'Đăng nhập hệ thống';
-  username: string = '';
-  password: string = '';
+  username: string | undefined;
+  password: string | undefined;
   isLoading: boolean = false;
 
   constructor(

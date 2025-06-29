@@ -17,13 +17,38 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IDichVuWeb_Service {
     /**
-     * @return OK
+     * Chỉnh sửa
+     * @return Chỉnh sửa thành công
      */
-    apiLogout(body: string): Observable<ApiResponseObject>;
+    apiPrivateUsersUpdate(id: number, body: SysUser): Observable<ApiResponseCustom>;
+    /**
+     * Lấy danh sách có phân trang
+     * @return Lấy danh sách thành công
+     */
+    apiPrivateUsersSearchPaging(body: PageModel): Observable<ApiResponseCustomPagedResultSysUser>;
+    /**
+     * Lấy danh sách SysUser có phân trang + tìm kiếm custom
+     * @return Lấy danh sách thành công
+     */
+    apiPrivateUsersSearchPagingCustom(body: UserPageModelCustom): Observable<ApiResponseCustomPagedResultSysUser>;
+    /**
+     * Tạo mới
+     * @return Tạo mới thành công
+     */
+    apiPrivateUsersInsert(body: SysUser): Observable<ApiResponseCustom>;
+    /**
+     * Lấy dữ liệu theo cột
+     * @return Lấy dữ liệu thành công
+     */
+    apiPrivateUsersGetDataByColumn(body: { [key: string]: string; }): Observable<ApiResponseCustom>;
     /**
      * @return OK
      */
-    apiLogin(body: LoginRequestDTO): Observable<ApiResponseTokenResponse>;
+    apiLogout(body: string): Observable<ApiResponseCustomObject>;
+    /**
+     * @return OK
+     */
+    apiLogin(body: LoginRequestDTO): Observable<ApiResponseCustomTokenResponse>;
     /**
      * @return OK
      */
@@ -32,6 +57,16 @@ export interface IDichVuWeb_Service {
      * @return OK
      */
     publicApiHello(): Observable<string>;
+    /**
+     * Lấy thông tin theo ID
+     * @return Lấy thông tin thành công
+     */
+    apiPrivateUsersGetOne(id: number): Observable<ApiResponseCustom>;
+    /**
+     * Xóa bản ghi
+     * @return Xóa thành công
+     */
+    apiPrivateUsersDelete(id: number): Observable<ApiResponseCustom>;
 }
 
 @Injectable({
@@ -48,9 +83,332 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
     }
 
     /**
+     * Chỉnh sửa
+     * @return Chỉnh sửa thành công
+     */
+    apiPrivateUsersUpdate(id: number, body: SysUser, httpContext?: HttpContext): Observable<ApiResponseCustom> {
+        let url_ = this.baseUrl + "/api/private/users/update/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustom>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustom>;
+        }));
+    }
+
+    protected processApiPrivateUsersUpdate(response: HttpResponseBase): Observable<ApiResponseCustom> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustom.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Lấy danh sách có phân trang
+     * @return Lấy danh sách thành công
+     */
+    apiPrivateUsersSearchPaging(body: PageModel, httpContext?: HttpContext): Observable<ApiResponseCustomPagedResultSysUser> {
+        let url_ = this.baseUrl + "/api/private/users/search-paging";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersSearchPaging(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersSearchPaging(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustomPagedResultSysUser>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustomPagedResultSysUser>;
+        }));
+    }
+
+    protected processApiPrivateUsersSearchPaging(response: HttpResponseBase): Observable<ApiResponseCustomPagedResultSysUser> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustomPagedResultSysUser.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Lấy danh sách SysUser có phân trang + tìm kiếm custom
+     * @return Lấy danh sách thành công
+     */
+    apiPrivateUsersSearchPagingCustom(body: UserPageModelCustom, httpContext?: HttpContext): Observable<ApiResponseCustomPagedResultSysUser> {
+        let url_ = this.baseUrl + "/api/private/users/search-paging-custom";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersSearchPagingCustom(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersSearchPagingCustom(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustomPagedResultSysUser>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustomPagedResultSysUser>;
+        }));
+    }
+
+    protected processApiPrivateUsersSearchPagingCustom(response: HttpResponseBase): Observable<ApiResponseCustomPagedResultSysUser> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustomPagedResultSysUser.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Tạo mới
+     * @return Tạo mới thành công
+     */
+    apiPrivateUsersInsert(body: SysUser, httpContext?: HttpContext): Observable<ApiResponseCustom> {
+        let url_ = this.baseUrl + "/api/private/users/insert";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersInsert(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersInsert(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustom>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustom>;
+        }));
+    }
+
+    protected processApiPrivateUsersInsert(response: HttpResponseBase): Observable<ApiResponseCustom> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = ApiResponseCustom.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Lấy dữ liệu theo cột
+     * @return Lấy dữ liệu thành công
+     */
+    apiPrivateUsersGetDataByColumn(body: { [key: string]: string; }, httpContext?: HttpContext): Observable<ApiResponseCustom> {
+        let url_ = this.baseUrl + "/api/private/users/get-data-by-column";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersGetDataByColumn(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersGetDataByColumn(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustom>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustom>;
+        }));
+    }
+
+    protected processApiPrivateUsersGetDataByColumn(response: HttpResponseBase): Observable<ApiResponseCustom> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustom.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
-    apiLogout(body: string, httpContext?: HttpContext): Observable<ApiResponseObject> {
+    apiLogout(body: string, httpContext?: HttpContext): Observable<ApiResponseCustomObject> {
         let url_ = this.baseUrl + "/api/logout";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -74,14 +432,14 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
                 try {
                     return this.processApiLogout(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ApiResponseObject>;
+                    return _observableThrow(e) as any as Observable<ApiResponseCustomObject>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ApiResponseObject>;
+                return _observableThrow(response_) as any as Observable<ApiResponseCustomObject>;
         }));
     }
 
-    protected processApiLogout(response: HttpResponseBase): Observable<ApiResponseObject> {
+    protected processApiLogout(response: HttpResponseBase): Observable<ApiResponseCustomObject> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -92,7 +450,7 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApiResponseObject.fromJS(resultData200);
+            result200 = ApiResponseCustomObject.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -106,7 +464,7 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
     /**
      * @return OK
      */
-    apiLogin(body: LoginRequestDTO, httpContext?: HttpContext): Observable<ApiResponseTokenResponse> {
+    apiLogin(body: LoginRequestDTO, httpContext?: HttpContext): Observable<ApiResponseCustomTokenResponse> {
         let url_ = this.baseUrl + "/api/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -131,14 +489,14 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
                 try {
                     return this.processApiLogin(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ApiResponseTokenResponse>;
+                    return _observableThrow(e) as any as Observable<ApiResponseCustomTokenResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ApiResponseTokenResponse>;
+                return _observableThrow(response_) as any as Observable<ApiResponseCustomTokenResponse>;
         }));
     }
 
-    protected processApiLogin(response: HttpResponseBase): Observable<ApiResponseTokenResponse> {
+    protected processApiLogin(response: HttpResponseBase): Observable<ApiResponseCustomTokenResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -149,7 +507,7 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApiResponseTokenResponse.fromJS(resultData200);
+            result200 = ApiResponseCustomTokenResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -170,8 +528,8 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
         let options_ : any = {
             observe: "response",
             responseType: "blob",
-            withCredentials: true,
             context: httpContext,
+            withCredentials: true, 
             headers: new HttpHeaders({
                 "Accept": "*/*"
             })
@@ -269,17 +627,246 @@ export class DichVuWeb_Service implements IDichVuWeb_Service {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * Lấy thông tin theo ID
+     * @return Lấy thông tin thành công
+     */
+    apiPrivateUsersGetOne(id: number, httpContext?: HttpContext): Observable<ApiResponseCustom> {
+        let url_ = this.baseUrl + "/api/private/users/getOne/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersGetOne(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersGetOne(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustom>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustom>;
+        }));
+    }
+
+    protected processApiPrivateUsersGetOne(response: HttpResponseBase): Observable<ApiResponseCustom> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustom.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Xóa bản ghi
+     * @return Xóa thành công
+     */
+    apiPrivateUsersDelete(id: number, httpContext?: HttpContext): Observable<ApiResponseCustom> {
+        let url_ = this.baseUrl + "/api/private/users/delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "*/*"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApiPrivateUsersDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApiPrivateUsersDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ApiResponseCustom>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ApiResponseCustom>;
+        }));
+    }
+
+    protected processApiPrivateUsersDelete(response: HttpResponseBase): Observable<ApiResponseCustom> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApiResponseCustom.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ApiResponseCustom.fromJS(resultData500);
+            return throwException("L\u1ed7i server", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
-export class ApiResponseObject implements IApiResponseObject {
-    status?: ApiResponseObjectStatus;
+export class SysUser implements ISysUser {
+    id?: number;
+    unitcode?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    fullname?: string;
+    username?: string;
+    password?: string;
+    email?: string;
+    phone?: string;
+    gender?: number;
+    address?: string;
+    avatarUrl?: string;
+    status?: number;
+
+    [key: string]: any;
+
+    constructor(data?: ISysUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.unitcode = _data["unitcode"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.fullname = _data["fullname"];
+            this.username = _data["username"];
+            this.password = _data["password"];
+            this.email = _data["email"];
+            this.phone = _data["phone"];
+            this.gender = _data["gender"];
+            this.address = _data["address"];
+            this.avatarUrl = _data["avatarUrl"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): SysUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new SysUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["unitcode"] = this.unitcode;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["fullname"] = this.fullname;
+        data["username"] = this.username;
+        data["password"] = this.password;
+        data["email"] = this.email;
+        data["phone"] = this.phone;
+        data["gender"] = this.gender;
+        data["address"] = this.address;
+        data["avatarUrl"] = this.avatarUrl;
+        data["status"] = this.status;
+        return data;
+    }
+
+    clone(): SysUser {
+        const json = this.toJSON();
+        let result = new SysUser();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISysUser {
+    id?: number;
+    unitcode?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    fullname?: string;
+    username?: string;
+    password?: string;
+    email?: string;
+    phone?: string;
+    gender?: number;
+    address?: string;
+    avatarUrl?: string;
+    status?: number;
+
+    [key: string]: any;
+}
+
+export class ApiResponseCustom implements IApiResponseCustom {
+    status?: ApiResponseCustomStatus;
     message?: string;
     code?: number;
     data?: any;
 
     [key: string]: any;
 
-    constructor(data?: IApiResponseObject) {
+    constructor(data?: IApiResponseCustom) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -301,9 +888,9 @@ export class ApiResponseObject implements IApiResponseObject {
         }
     }
 
-    static fromJS(data: any): ApiResponseObject {
+    static fromJS(data: any): ApiResponseCustom {
         data = typeof data === 'object' ? data : {};
-        let result = new ApiResponseObject();
+        let result = new ApiResponseCustom();
         result.init(data);
         return result;
     }
@@ -321,16 +908,371 @@ export class ApiResponseObject implements IApiResponseObject {
         return data;
     }
 
-    clone(): ApiResponseObject {
+    clone(): ApiResponseCustom {
         const json = this.toJSON();
-        let result = new ApiResponseObject();
+        let result = new ApiResponseCustom();
         result.init(json);
         return result;
     }
 }
 
-export interface IApiResponseObject {
-    status?: ApiResponseObjectStatus;
+export interface IApiResponseCustom {
+    status?: ApiResponseCustomStatus;
+    message?: string;
+    code?: number;
+    data?: any;
+
+    [key: string]: any;
+}
+
+export class PageModel implements IPageModel {
+    currentPage?: number;
+    pageSize?: number;
+    strKey?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IPageModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+            this.strKey = _data["strKey"];
+        }
+    }
+
+    static fromJS(data: any): PageModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new PageModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        data["strKey"] = this.strKey;
+        return data;
+    }
+
+    clone(): PageModel {
+        const json = this.toJSON();
+        let result = new PageModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPageModel {
+    currentPage?: number;
+    pageSize?: number;
+    strKey?: string;
+
+    [key: string]: any;
+}
+
+export class ApiResponseCustomPagedResultSysUser implements IApiResponseCustomPagedResultSysUser {
+    status?: ApiResponseCustomPagedResultSysUserStatus;
+    message?: string;
+    code?: number;
+    data?: PagedResultSysUser;
+
+    [key: string]: any;
+
+    constructor(data?: IApiResponseCustomPagedResultSysUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.data = data.data && !(<any>data.data).toJSON ? new PagedResultSysUser(data.data) : <PagedResultSysUser>this.data;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.status = _data["status"];
+            this.message = _data["message"];
+            this.code = _data["code"];
+            this.data = _data["data"] ? PagedResultSysUser.fromJS(_data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ApiResponseCustomPagedResultSysUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiResponseCustomPagedResultSysUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["status"] = this.status;
+        data["message"] = this.message;
+        data["code"] = this.code;
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): ApiResponseCustomPagedResultSysUser {
+        const json = this.toJSON();
+        let result = new ApiResponseCustomPagedResultSysUser();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IApiResponseCustomPagedResultSysUser {
+    status?: ApiResponseCustomPagedResultSysUserStatus;
+    message?: string;
+    code?: number;
+    data?: IPagedResultSysUser;
+
+    [key: string]: any;
+}
+
+export class PagedResultSysUser implements IPagedResultSysUser {
+    currentPage?: number;
+    totalPages?: number;
+    totalElements?: number;
+    pageSize?: number;
+    strKey?: string;
+    data?: SysUser[];
+
+    [key: string]: any;
+
+    constructor(data?: IPagedResultSysUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.data) {
+                this.data = [];
+                for (let i = 0; i < data.data.length; i++) {
+                    let item = data.data[i];
+                    this.data[i] = item && !(<any>item).toJSON ? new SysUser(item) : <SysUser>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.currentPage = _data["currentPage"];
+            this.totalPages = _data["totalPages"];
+            this.totalElements = _data["totalElements"];
+            this.pageSize = _data["pageSize"];
+            this.strKey = _data["strKey"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(SysUser.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultSysUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultSysUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["totalElements"] = this.totalElements;
+        data["pageSize"] = this.pageSize;
+        data["strKey"] = this.strKey;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item ? item.toJSON() : <any>undefined);
+        }
+        return data;
+    }
+
+    clone(): PagedResultSysUser {
+        const json = this.toJSON();
+        let result = new PagedResultSysUser();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultSysUser {
+    currentPage?: number;
+    totalPages?: number;
+    totalElements?: number;
+    pageSize?: number;
+    strKey?: string;
+    data?: ISysUser[];
+
+    [key: string]: any;
+}
+
+export class UserPageModelCustom implements IUserPageModelCustom {
+    currentPage?: number;
+    pageSize?: number;
+    strKey?: string;
+    role?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IUserPageModelCustom) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+            this.strKey = _data["strKey"];
+            this.role = _data["role"];
+        }
+    }
+
+    static fromJS(data: any): UserPageModelCustom {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserPageModelCustom();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        data["strKey"] = this.strKey;
+        data["role"] = this.role;
+        return data;
+    }
+
+    clone(): UserPageModelCustom {
+        const json = this.toJSON();
+        let result = new UserPageModelCustom();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserPageModelCustom {
+    currentPage?: number;
+    pageSize?: number;
+    strKey?: string;
+    role?: string;
+
+    [key: string]: any;
+}
+
+export class ApiResponseCustomObject implements IApiResponseCustomObject {
+    status?: ApiResponseCustomObjectStatus;
+    message?: string;
+    code?: number;
+    data?: any;
+
+    [key: string]: any;
+
+    constructor(data?: IApiResponseCustomObject) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.status = _data["status"];
+            this.message = _data["message"];
+            this.code = _data["code"];
+            this.data = _data["data"];
+        }
+    }
+
+    static fromJS(data: any): ApiResponseCustomObject {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApiResponseCustomObject();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["status"] = this.status;
+        data["message"] = this.message;
+        data["code"] = this.code;
+        data["data"] = this.data;
+        return data;
+    }
+
+    clone(): ApiResponseCustomObject {
+        const json = this.toJSON();
+        let result = new ApiResponseCustomObject();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IApiResponseCustomObject {
+    status?: ApiResponseCustomObjectStatus;
     message?: string;
     code?: number;
     data?: any;
@@ -397,15 +1339,15 @@ export interface ILoginRequestDTO {
     [key: string]: any;
 }
 
-export class ApiResponseTokenResponse implements IApiResponseTokenResponse {
-    status?: ApiResponseTokenResponseStatus;
+export class ApiResponseCustomTokenResponse implements IApiResponseCustomTokenResponse {
+    status?: ApiResponseCustomTokenResponseStatus;
     message?: string;
     code?: number;
     data?: TokenResponse;
 
     [key: string]: any;
 
-    constructor(data?: IApiResponseTokenResponse) {
+    constructor(data?: IApiResponseCustomTokenResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -428,9 +1370,9 @@ export class ApiResponseTokenResponse implements IApiResponseTokenResponse {
         }
     }
 
-    static fromJS(data: any): ApiResponseTokenResponse {
+    static fromJS(data: any): ApiResponseCustomTokenResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new ApiResponseTokenResponse();
+        let result = new ApiResponseCustomTokenResponse();
         result.init(data);
         return result;
     }
@@ -448,16 +1390,16 @@ export class ApiResponseTokenResponse implements IApiResponseTokenResponse {
         return data;
     }
 
-    clone(): ApiResponseTokenResponse {
+    clone(): ApiResponseCustomTokenResponse {
         const json = this.toJSON();
-        let result = new ApiResponseTokenResponse();
+        let result = new ApiResponseCustomTokenResponse();
         result.init(json);
         return result;
     }
 }
 
-export interface IApiResponseTokenResponse {
-    status?: ApiResponseTokenResponseStatus;
+export interface IApiResponseCustomTokenResponse {
+    status?: ApiResponseCustomTokenResponseStatus;
     message?: string;
     code?: number;
     data?: ITokenResponse;
@@ -624,14 +1566,28 @@ export interface ITokenResponse {
     [key: string]: any;
 }
 
-export enum ApiResponseObjectStatus {
+export enum ApiResponseCustomStatus {
     SUCCESS = "SUCCESS",
     ERROR = "ERROR",
     WARNING = "WARNING",
     INFO = "INFO",
 }
 
-export enum ApiResponseTokenResponseStatus {
+export enum ApiResponseCustomPagedResultSysUserStatus {
+    SUCCESS = "SUCCESS",
+    ERROR = "ERROR",
+    WARNING = "WARNING",
+    INFO = "INFO",
+}
+
+export enum ApiResponseCustomObjectStatus {
+    SUCCESS = "SUCCESS",
+    ERROR = "ERROR",
+    WARNING = "WARNING",
+    INFO = "INFO",
+}
+
+export enum ApiResponseCustomTokenResponseStatus {
     SUCCESS = "SUCCESS",
     ERROR = "ERROR",
     WARNING = "WARNING",
