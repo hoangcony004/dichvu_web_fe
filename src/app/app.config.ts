@@ -6,9 +6,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { authInterceptor } from './core/auth/admin/auth.interceptor';
+import { authInterceptor } from './core/interceptor/admin/auth.interceptor';
 import { SpinnerInterceptor } from './core/interceptor/spinner.interceptor';
 import { httpErrorInterceptor } from './shared/errors/http-error.interceptor';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,9 +18,12 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         SpinnerInterceptor,
         authInterceptor,
-        httpErrorInterceptor
+        httpErrorInterceptor,
       ])
     ),
+    // ✅ Thêm dòng này để cung cấp JwtHelperService
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
     provideAnimations(),
     importProvidersFrom(
       ToastrModule.forRoot({
@@ -31,5 +35,6 @@ export const appConfig: ApplicationConfig = {
       }),
       NgxSpinnerModule
     ),
+    // WaitingService // 👈 Thêm nếu KHÔNG xài providedIn: 'root'
   ],
 };

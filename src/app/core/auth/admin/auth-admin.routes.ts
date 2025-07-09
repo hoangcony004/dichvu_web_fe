@@ -7,19 +7,6 @@ export const AuthAdminRoutes: Routes = [
     path: '',
     component: LoginComponent,
   },
-  // {
-  //   path: '',
-  //   component: LayoutLoginAdminComponent,
-  //   children: [
-  //     { path: '', component: LoginComponent },
-
-
-
-
-
-      
-  //   ],
-  // },
   {
     path: '',
     redirectTo: '',

@@ -81,7 +81,7 @@ export class UserComponent implements OnInit {
         }
       },
       error: () => {
-        this.toastr.error('Lỗi kết nối đến server', 'Lỗi');
+        this.toastr.error('Đã có lỗi gì đó sảy ra', 'Lỗi');
       },
     });
   }

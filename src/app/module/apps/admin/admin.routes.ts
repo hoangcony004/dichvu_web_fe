@@ -18,6 +18,10 @@ export const AdminRoutes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
+        path: '',
+        component: DashboardComponent,
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
       },
@@ -29,9 +33,9 @@ export const AdminRoutes: Routes = [
     ]
   },
   
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'dashboard',
+  //   pathMatch: 'full',
+  // },
 ];

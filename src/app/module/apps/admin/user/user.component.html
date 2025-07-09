@@ -17,8 +17,8 @@
             <div class="input-group-append">
               <app-btn-search class="btn-sm flex-fill" [text]="'Tìm kiếm'" [color]="'success'"
                 (click)="onSearch()"></app-btn-search>
-              <!-- &nbsp;&nbsp; -->
-              <!-- <app-btn-export class="btn-sm flex-fill" [text]="'Export'" [color]="'success'"></app-btn-export> -->
+              <!-- &nbsp;
+              <app-btn-export class="btn-sm flex-fill" [text]="'Export'" [color]="'success'"></app-btn-export> -->
             </div>
           </div>
         </div>
@@ -61,12 +61,13 @@
 
                 <app-icon-delete matTooltip="Xoá" style="color: red"
                   (click)="openDeleteDialog(item.id ?? 0, item.username)"></app-icon-delete>
-                  <!-- &nbsp;&nbsp; -->
+                <!-- &nbsp;&nbsp; -->
                 <!-- <ng-icon-lock *ngIf="item.status == 1" matTooltip="Khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock>
                         <ng-icon-lock-open *ngIf="item.status == 2" matTooltip="Mở khóa tài khoản" style="color: black" (click)="openLockDialog(item.id ?? 0, item.username)"></ng-icon-lock-open>                   -->
               </td>
             </tr>
-            <div class="mt-1">Tổng bản ghi: {{ totalItems || 0 }}</div>
+            <!-- <div class="mt-1 total-record">Tổng bản ghi: {{ totalItems || 0 }}</div> -->
+
           </tbody>
         </table>
         <app-pagination [currentPage]="pageModel.currentPage!" [totalPages]="totalPages!" [totalItems]="totalItems!"

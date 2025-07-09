@@ -1,6 +1,7 @@
-<div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalPages > 1">
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <!-- *ngIf="totalPages > 1" -->
     <div>
-      <span>Trang {{ currentPage }}/{{ totalPages }} ({{ totalItems }} bản ghi)</span>
+      <span>Trang {{ currentPage }}/{{ totalPages }} (Tổng bản ghi:{{ totalItems }})</span>
     </div>
     <div>
       <nav aria-label="Page navigation">
