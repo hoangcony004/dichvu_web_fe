@@ -1,0 +1,51 @@
+.mobile-search-popup {
+  position: absolute;
+  top: 100%; 
+  right: 0;  /* Bám mép phải thay vì mép trái */
+  margin-top: 8px;
+  background: #fff;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 1000;
+  width: 200px; /* Hoặc tuỳ bạn */
+}
+
+/* Mũi tên */
+.mobile-search-popup::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 58px;  /* Đặt mũi tên lệch từ mép phải ra ngoài */
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #ddd transparent;
+}
+
+.mobile-search-popup::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 30px; /* Giống ::before */
+  border-width: 7px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+
+.dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+#userDropdown::after {
+  display: none;
+}
+
+
+
+@media (min-width: 992px) {
+  .navbar .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+  }
+}

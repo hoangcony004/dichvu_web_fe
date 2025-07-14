@@ -7,7 +7,7 @@ export const routes: Routes = [
       path: 'admin',
       loadChildren: () =>
         import('./module/apps/admin/admin.routes').then((m) => m.AdminRoutes),
-      // canActivate: [AuthGuard] // 👉 Bắt buộc phải qua guard
+      canActivate: [AuthGuard] // 👉 Bắt buộc phải qua guard
     },
     {
       path: '',

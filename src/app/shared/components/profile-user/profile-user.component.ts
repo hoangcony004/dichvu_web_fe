@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { SharedModule } from '../../shared.module';
 
 @Component({
   selector: 'app-profile-user',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './profile-user.component.html',
   styleUrl: './profile-user.component.css'
 })

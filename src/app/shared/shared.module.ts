@@ -16,6 +16,7 @@ import { IconLockOpenComponent } from './components/templates/icons/lock-open/ic
 import { IconLockComponent } from './components/templates/icons/lock/icon-lock.component';
 import { IconChevronDownComponent } from './components/templates/icons/chevron-down/icon-chevron-down.component';
 import { BtnExportComponent } from './components/templates/buttons/export/btn-export.component';
+import { IconBackComponent } from './components/templates/icons/back/icon-back.component';
 
 const sharedComponents = [
     // icons
@@ -27,6 +28,7 @@ const sharedComponents = [
   IconLockOpenComponent,
   IconLockComponent,
   IconChevronDownComponent,
+  IconBackComponent,
 
 
 

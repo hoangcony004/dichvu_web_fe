@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@ng-select/ng-select": "^14.7.0",
     "bootstrap": "^5.3.6",
+    "gsap": "^3.13.0",
     "jwt-decode": "^4.0.0",
     "ngx-spinner": "^19.0.0",
     "ngx-toastr": "^19.0.0",

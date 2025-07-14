@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit{
     private dialog: MatDialog,
     private commonService: CommonService,
   ) {}
+  
   ngOnInit(): void {
     const user = localStorage.getItem('user');
     if (user) {

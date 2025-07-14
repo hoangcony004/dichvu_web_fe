@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LayoutClientComponent } from '../../../shared/layouts/client/layout-client/layout-client.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const ClientRoutes: Routes = [
   {
@@ -18,6 +19,10 @@ export const ClientRoutes: Routes = [
       {
         path: '',
         component: HomeComponent,
+      },
+      {
+        path: 'contact',
+        component: ContactComponent,
       },
     ],
   },

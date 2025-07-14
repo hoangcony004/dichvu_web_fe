@@ -1,1 +1,89 @@
-<p>header works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between">
+    <a class="navbar-brand" routerLink="/">LOGO</a>
+
+    <!-- Nhóm search + toggle cho mobile -->
+    <div class="d-flex align-items-center position-relative order-lg-2">
+      <!-- Icon search -->
+      <button class="btn p-0 me-2 d-lg-none border-0 bg-transparent" type="button" (click)="toggleSearch()">
+        <i class="fas fa-search"></i>
+      </button>
+
+      <!-- Popup search -->
+      <div *ngIf="showSearch" class="mobile-search-popup">
+        <div class="d-flex align-items-center">
+          <input class="form-control" type="search" placeholder="Nhập từ khóa...">
+          <!-- <button class="btn btn-primary" type="button">Search</button> -->
+          <!-- <app-btn-search></app-btn-search> -->
+        </div>
+      </div>
+
+      <!-- Nút bar -->
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Navbar collapse -->
+    <div class="collapse navbar-collapse justify-content-center order-lg-1" id="navbarNav">
+      <!-- Ô tìm kiếm desktop -->
+      <input class="form-control mx-auto d-none d-lg-block w-50" type="search" placeholder="Tìm kiếm...">
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active">Trang chủ</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Dịch vụ
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Dịch vụ 1</a></li>
+            <li><a class="dropdown-item" href="#">Dịch vụ 2</a></li>
+            <li><a class="dropdown-item" href="#">Dịch vụ 3</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Giới thiệu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/apps/contact" routerLinkActive="active">Liên hệ</a>
+        </li>
+        <li class="nav-item">
+          <!-- <a class="btn btn-outline-dark" routerLink="/login">Sign Up</a> -->
+          <div class="dropdown">
+            <a href="#" class="d-inline-flex flex-column align-items-center text-decoration-none dropdown-toggle"
+              id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+              style="line-height: 1; font-size: 12px;">
+              <img src="https://res.cloudinary.com/duwg8ygye/image/upload/v1747134136/admin_lig4ja.jpg" alt="avatar"
+                width="24px" height="24px" class="rounded-circle mb-1" />
+              <span class="text-dark"><b class="text-dark">Số dư:</b> 9,999,999 vn₫</span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="openProfileDialog()"><i class="fas fa-user me-2"></i>Thông tin cá
+                  nhân</a></li>
+
+              <li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-money-check-alt"></i> Nạp tiền</a>
+              </li>
+
+              <li><a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Đổi mật khẩu</a></li>
+
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li><a class="dropdown-item" routerLink="/login"><i class="fas fa-sign-out-alt me-2"></i>Đăng
+                  xuất</a></li>
+            </ul>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
