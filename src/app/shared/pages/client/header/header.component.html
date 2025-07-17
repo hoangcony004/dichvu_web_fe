@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: rgb(220, 241, 223);">
   <div class="container d-flex flex-wrap align-items-center justify-content-between">
     <a class="navbar-brand" routerLink="/">LOGO</a>
 
@@ -28,7 +28,14 @@
     <!-- Navbar collapse -->
     <div class="collapse navbar-collapse justify-content-center order-lg-1" id="navbarNav">
       <!-- Ô tìm kiếm desktop -->
-      <input class="form-control mx-auto d-none d-lg-block w-50" type="search" placeholder="Tìm kiếm...">
+      <!-- <input class="form-control mx-auto d-none d-lg-block w-50" type="search" placeholder="Tìm kiếm...">&nbsp; -->
+      <!-- <app-btn-search class="btn-sm flex-fill d-none d-lg-block" [text]="'Tìm kiếm'" [color]="'primary'"
+                (click)="onSearch()"></app-btn-search> -->
+      <div class="search-box d-none d-lg-block">
+        <input type="text" placeholder="Nhập từ khóa...">
+        <i class="fas fa-search"></i>
+      </div>
+
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
@@ -52,7 +59,7 @@
           <a class="nav-link" routerLink="/apps/contact" routerLinkActive="active">Liên hệ</a>
         </li>
         <li class="nav-item">
-          <!-- <a class="btn btn-outline-dark" routerLink="/login">Sign Up</a> -->
+          <!-- <a class="btn btn-outline-dark" routerLink="/login">Đăng nhập</a> -->
           <div class="dropdown">
             <a href="#" class="d-inline-flex flex-column align-items-center text-decoration-none dropdown-toggle"
               id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"
@@ -63,7 +70,8 @@
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              <li><a class="dropdown-item" href="javascript:void(0)" (click)="openProfileDialog()"><i class="fas fa-user me-2"></i>Thông tin cá
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="openProfileDialog()"><i
+                    class="fas fa-user me-2"></i>Thông tin cá
                   nhân</a></li>
 
               <li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-money-check-alt"></i> Nạp tiền</a>

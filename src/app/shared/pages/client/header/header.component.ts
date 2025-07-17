@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, HostListener, OnInit } from '@angular/core';
 import { initHeaderAnimation } from './header.animation';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,7 @@ import { STATUS_ACTION } from '../../../../core/custom/constants';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements AfterViewInit, OnDestroy  {
+export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit  {
   showSearch = false;
 
   constructor(
@@ -28,11 +28,19 @@ export class HeaderComponent implements AfterViewInit, OnDestroy  {
     private commonService: CommonService,
   ) {}
 
+  ngOnInit(): void {
+
+  }
+
   ngAfterViewInit() {
     initHeaderAnimation();
   }
   
   ngOnDestroy(): void {
+  }
+
+  onSearch() {
+    
   }
 
 

@@ -41,6 +41,39 @@
   display: none;
 }
 
+.search-box {
+  position: relative;
+  width: 400px; /* hoặc w-50 nếu dùng Bootstrap */
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 20px 10px 40px; /* padding-left đủ chứa icon */
+  border-radius: 50px; /* bo tròn như hình */
+  border: none;
+  outline: none;
+}
+
+.search-box i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}
+
+
 
 
 @media (min-width: 992px) {
@@ -49,3 +82,14 @@
     margin-top: 0;
   }
 }
+
+@media (max-width: 991px) {
+  #navbarNav:not(.show) .nav-item {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: none !important; /* quan trọng để tránh transition CSS cản GSAP */
+  }
+}
+
+
